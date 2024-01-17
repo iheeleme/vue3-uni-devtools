@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 const devtools_app = ref<HTMLInputElement | null>(null)
 
@@ -41,7 +41,7 @@ onMounted(() => {
     appDrag()
 })
 
-onBeforeMount(() => {
+onBeforeUnmount(() => {
     //dom卸载前移除拖动事件
     document.removeEventListener('mousemove', appDrag)
     document.removeEventListener('mouseup', appDrag)

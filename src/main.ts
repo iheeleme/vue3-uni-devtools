@@ -1,5 +1,9 @@
-import { createApp } from 'vue'
 import './style.css'
-import App from './App.vue'
+import { devApp, useConsoleCatch} from './components/index'
+export {
+    devApp,
+    useConsoleCatch
+}
 
-createApp(App).mount('#app')
+
+

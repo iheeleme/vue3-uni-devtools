@@ -1,5 +1,6 @@
 export function useConsoleCatch() {
-    const originConsole = window.console
+
+    const originConsole = globalThis.console
 
     //保存的捕获的console数组
     const consoleArray: string[] = []
@@ -18,7 +19,7 @@ export function useConsoleCatch() {
 
     const consoleProxy = new Proxy(originConsole, handler)
 
-    window.console = consoleProxy
+    globalThis.console = consoleProxy
 
     return {
         consoleProxy,

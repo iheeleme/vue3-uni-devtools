@@ -1,9 +1,3 @@
-import './style.css'
-import { devApp, useConsoleCatch} from './components/index'
-export {
-    devApp,
-    useConsoleCatch
-}
-
-
-
+//import './style.css'
+import { useConsoleCatch } from './lib'
+export { useConsoleCatch }

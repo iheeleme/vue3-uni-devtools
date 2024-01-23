@@ -1,28 +1,31 @@
+import { clearConsoleData, saveConsoleData } from '@/utils/index'
+import { consolePush } from '@/utils/mitt'
+
 export function useConsoleCatch() {
+  //初始化前clear
+  clearConsoleData()
 
-    const originConsole = globalThis.console
+  const originConsole = globalThis.console
 
-    //保存的捕获的console数组
-    const consoleArray: string[] = []
+  const handler = {
+    get: function (target: any, property: string) {
+      return function (...args: any[]) {
+        // 将console的打印存到store里
+        saveConsoleData(JSON.stringify(args))
+        // 然后调用原始的console方法
+        Reflect.apply(target[property], originConsole, args)
+        // 发送数据增加事件
+        consolePush()
+        return
+      }
+    },
+  }
 
-    const handler = {
-        get: function (target: any, property: string) {
-            return function (...args: any[]) {
-                
-                originConsole.log(`监听到了console`, property, args);
-                consoleArray.push(`console.log${args}`);
-                // 然后调用原始的console方法
-                return Reflect.apply(target[property], originConsole, args);
-            };
-        },
-    }
+  const consoleProxy = new Proxy(originConsole, handler)
 
-    const consoleProxy = new Proxy(originConsole, handler)
+  globalThis.console = consoleProxy
 
-    globalThis.console = consoleProxy
-
-    return {
-        consoleProxy,
-        consoleArray
-    }
+  return {
+    consoleProxy,
+  }
 }
